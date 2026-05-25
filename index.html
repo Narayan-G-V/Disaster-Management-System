@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeCampus | Disaster Preparedness & Response</title>
+
+  <!-- Google Fonts: Orbitron for headers, Inter for body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700;900&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="logo" onclick="showSection('home')">
+      <i class="fa-solid fa-shield-halved"></i> SafeCampus
+    </div>
+    <nav id="nav-menu" role="navigation" aria-label="Main navigation">
+      <a onclick="showSection('home')" class="nav-link active" role="button" tabindex="0" aria-label="Go to home"><i
+          class="fa-solid fa-house"></i> Home</a>
+      <a onclick="showSection('library')" class="nav-link" role="button" tabindex="0" aria-label="Go to library"><i
+          class="fa-solid fa-book-medical"></i> Library</a>
+      <a onclick="showSection('kit')" class="nav-link" role="button" tabindex="0" aria-label="Go to emergency kit"><i
+          class="fa-solid fa-kit-medical"></i> Emergency Kit</a>
+      <a onclick="showSection('quiz')" class="nav-link" role="button" tabindex="0" aria-label="Go to tests"><i
+          class="fa-solid fa-clipboard-question"></i> Tests</a>
+      <a onclick="showSection('progress')" class="nav-link" role="button" tabindex="0" aria-label="Go to progress"><i
+          class="fa-solid fa-chart-line"></i> Progress</a>
+      <a onclick="logout()" class="nav-link logout" role="button" tabindex="0" aria-label="Logout"><i
+          class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </nav>
+    <div class="mobile-toggle" onclick="toggleMobileMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME SECTION -->
+    <section id="home" class="section active fade-in">
+      <div class="hero">
+        <div class="hero-content">
+          <h1>Disaster Preparedness <br><span class="highlight">Education System</span></h1>
+          <p>Master the skills to survive and respond to any emergency. Your safety is in your knowledge.</p>
+          <div class="btn-group">
+            <button class="btn primary" onclick="showSection('library')">Explore Disasters <i
+                class="fa-solid fa-arrow-right"></i></button>
+            <button class="btn secondary" onclick="showSection('quiz')">Take a Test</button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <i class="fa-solid fa-shield-virus hero-icon"></i>
+        </div>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card" onclick="showLibraryByCategory('natural')">
+          <i class="fa-solid fa-earth-americas"></i>
+          <h3>Natural Hazards</h3>
+          <p>Learn about Earthquakes, Floods, and more.</p>
+        </div>
+        <div class="feature-card" onclick="showLibraryByCategory('manmade')">
+          <i class="fa-solid fa-industry"></i>
+          <h3>Man-Made Hazards</h3>
+          <p>Understanding industrial and urban risks.</p>
+        </div>
+        <div class="feature-card" onclick="showSection('kit')">
+          <i class="fa-solid fa-suitcase-medical"></i>
+          <h3>Emergency Kit</h3>
+          <p>Build your personalized survival kit.</p>
+        </div>
+        <div class="feature-card" onclick="showSection('progress')">
+          <i class="fa-solid fa-chart-pie"></i>
+          <h3>Track Progress</h3>
+          <p>Monitor your readiness level.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIBRARY SECTION -->
+    <section id="library" class="section fade-in">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-book-journal-whills"></i> Disaster Library</h2>
+        <p>Select a hazard to learn more about its causes, impacts, and safety measures.</p>
+      </div>
+
+      <div class="filter-buttons" role="group" aria-label="Filter disasters by category">
+        <button class="filter-btn active" onclick="filterByCategory('all')" aria-pressed="true">
+          <i class="fa-solid fa-globe"></i> All Disasters
+        </button>
+        <button class="filter-btn" onclick="filterByCategory('natural')" aria-pressed="false">
+          <i class="fa-solid fa-earth-americas"></i> Natural
+        </button>
+        <button class="filter-btn" onclick="filterByCategory('manmade')" aria-pressed="false">
+          <i class="fa-solid fa-industry"></i> Man-Made
+        </button>
+      </div>
+
+      <div class="search-bar">
+        <i class="fa-solid fa-search"></i>
+        <input type="text" id="disasterSearch" placeholder="Search disasters..." onkeyup="debouncedFilter()"
+          aria-label="Search disasters">
+      </div>
+
+      <div class="cards-grid" id="disasterGrid">
+        <!-- Disasters will be populated by JS -->
+      </div>
+    </section>
+
+    <!-- DISASTER DETAIL VIEW (Overlays the library or separate section) -->
+    <section id="hazardPage" class="section fade-in">
+      <button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i> Back to Library</button>
+      <div id="hazardDetails" class="detail-container">
+        <!-- Content injected by JS -->
+      </div>
+    </section>
+
+    <!-- EMERGENCY KIT SECTION -->
+    <section id="kit" class="section fade-in">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-box-open"></i> Emergency Survival Kit</h2>
+        <p>Check off items as you pack them. Your goal is 100% readiness.</p>
+      </div>
+
+      <div class="kit-container">
+        <div class="kit-sidebar">
+          <button class="category-btn active" onclick="loadKitCategory('water', this)"><i
+              class="fa-solid fa-glass-water"></i> Water</button>
+          <button class="category-btn" onclick="loadKitCategory('food', this)"><i class="fa-solid fa-bread-slice"></i>
+            Food</button>
+          <button class="category-btn" onclick="loadKitCategory('medical', this)"><i
+              class="fa-solid fa-briefcase-medical"></i> Medical</button>
+          <button class="category-btn" onclick="loadKitCategory('communication', this)"><i
+              class="fa-solid fa-tower-broadcast"></i> Comm</button>
+          <button class="category-btn" onclick="loadKitCategory('tools', this)"><i
+              class="fa-solid fa-screwdriver-wrench"></i> Tools</button>
+          <button class="category-btn" onclick="loadKitCategory('clothing', this)"><i class="fa-solid fa-shirt"></i>
+            Clothing</button>
+          <button class="category-btn" onclick="loadKitCategory('shelter', this)"><i class="fa-solid fa-campground"></i>
+            Shelter</button>
+          <button class="category-btn" onclick="loadKitCategory('sanitation', this)"><i
+              class="fa-solid fa-pump-soap"></i> Hygiene</button>
+          <button class="category-btn" onclick="loadKitCategory('documents', this)"><i
+              class="fa-solid fa-file-contract"></i> Docs</button>
+          <button class="category-btn" onclick="loadKitCategory('financial', this)"><i
+              class="fa-solid fa-money-bill-wave"></i> Money</button>
+        </div>
+        <div class="kit-main">
+          <div class="kit-progress">
+            <span>Preparedness: <strong id="kitPercent">0%</strong></span>
+            <div class="progress-bar-bg">
+              <div id="kitBar" class="progress-bar-fill"></div>
+            </div>
+          </div>
+          <div id="kitItemsBox" class="kit-items-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ SECTION -->
+    <section id="quiz" class="section fade-in">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-brain"></i> Knowledge Tests</h2>
+        <p>Test your readiness. Select a category to begin.</p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card quiz-card">
+          <div class="icon"><i class="fa-solid fa-volcano"></i></div>
+          <h3>Natural Disasters</h3>
+          <button class="btn small" onclick="startQuiz('natural')">Start Test</button>
+        </div>
+        <div class="card quiz-card">
+          <div class="icon"><i class="fa-solid fa-biohazard"></i></div>
+          <h3>Biological Hazards</h3>
+          <button class="btn small" onclick="startQuiz('biological')">Start Test</button>
+        </div>
+        <div class="card quiz-card">
+          <div class="icon"><i class="fa-solid fa-industry"></i></div>
+          <h3>Industrial Safety</h3>
+          <button class="btn small" onclick="startQuiz('industrial')">Start Test</button>
+        </div>
+        <div class="card quiz-card">
+          <div class="icon"><i class="fa-solid fa-tree"></i></div>
+          <h3>Environmental</h3>
+          <button class="btn small" onclick="startQuiz('environmental')">Start Test</button>
+        </div>
+        <div class="card quiz-card">
+          <div class="icon"><i class="fa-solid fa-users-rays"></i></div>
+          <h3>Social Awareness</h3>
+          <button class="btn small" onclick="startQuiz('social')">Start Test</button>
+        </div>
+      </div>
+
+      <!-- Quiz Modal / Overlay -->
+      <div id="quizOverlay" class="overlay hidden">
+        <div class="quiz-container">
+          <div class="quiz-header">
+            <h3 id="quizTitle">Quiz</h3>
+            <button onclick="closeQuiz()" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div id="quizBox" class="quiz-body">
+            <!-- Questions injected here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRESS SECTION -->
+    <section id="progress" class="section fade-in">
+      <div class="section-header">
+        <h2><i class="fa-solid fa-ranking-star"></i> Safety Command Center</h2>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="stat-card main-stat">
+          <h3>Overall Readiness</h3>
+          <div class="readiness-bubble-container">
+            <div class="bubble-wrapper">
+              <div class="bubble-outer">
+                <div class="bubble-liquid" id="bubbleLiquid">
+                  <div class="bubble-wave"></div>
+                  <div class="bubble-wave wave2"></div>
+                </div>
+                <div class="bubble-glass"></div>
+                <div class="bubble-percentage" id="bubblePercentage">0%</div>
+              </div>
+              <div class="bubble-glow" id="bubbleGlow"></div>
+            </div>
+          </div>
+          <p id="readinessLevel">Novice Protector</p>
+        </div>
+
+        <div class="stats-column">
+          <div class="stat-card hover-card clickable-card" id="libraryCard" onclick="toggleLearnedDisasters()">
+            <h4><i class="fa-solid fa-book"></i> Library Mastery</h4>
+            <div class="progress-bar-bg small">
+              <div id="libraryBar" class="progress-bar-fill"></div>
+            </div>
+            <small><span id="learnedCount">0</span> / 20 Learned</small>
+            <div class="card-hint">Click to view learned disasters</div>
+          </div>
+
+          <div class="stat-card hover-card clickable-card" id="quizCard" onclick="toggleQuizHistory()">
+            <h4><i class="fa-solid fa-star"></i> Quiz Performance</h4>
+            <div class="progress-bar-bg small">
+              <div id="quizBar" class="progress-bar-fill purple"></div>
+            </div>
+            <small><span id="quizCount">0</span> Tests Taken</small>
+            <div class="card-hint">Click to view history</div>
+          </div>
+
+          <div class="stat-card hover-card clickable-card" id="kitStatCard" onclick="toggleKitItems()">
+            <h4><i class="fa-solid fa-suitcase"></i> Kit Preparedness</h4>
+            <div class="progress-bar-bg small">
+              <div id="kitBarStat" class="progress-bar-fill green"></div>
+            </div>
+            <small><span id="kitPercentLabel">0%</span> Items</small>
+            <div class="card-hint">Click to view items</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Learned Disasters Section -->
+      <div class="progress-section">
+        <h3><i class="fa-solid fa-graduation-cap"></i> Learned Disasters</h3>
+        <div id="learnedDisastersContainer" class="learned-disasters-container">
+          <p class="empty-state">No disasters learned yet. Explore the library!</p>
+        </div>
+      </div>
+
+      <!-- Quiz History Section -->
+      <div class="progress-section">
+        <h3><i class="fa-solid fa-history"></i> Quiz History</h3>
+        <div id="quizHistoryContainer" class="history-container">
+          <p class="empty-state">No quizzes taken yet. Start learning!</p>
+        </div>
+      </div>
+
+      <!-- Packed Kit Items Section -->
+      <div class="progress-section">
+        <h3><i class="fa-solid fa-box-check"></i> Packed Kit Items</h3>
+        <div id="packedItemsContainer" class="packed-items-container">
+          <p class="empty-state">No items packed yet. Build your emergency kit!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

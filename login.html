@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SafeCampus Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div style="
+    max-width:400px;
+    margin:100px auto;
+    background:#161b22;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.8);
+  ">
+
+    <h2 style="text-align:center;color:white;">🔐 SafeCampus Login</h2>
+
+    <input id="username" type="text" placeholder="Username"
+      style="width:100%;padding:12px;margin:12px 0;">
+
+    <input id="password" type="password" placeholder="Password"
+      style="width:100%;padding:12px;margin:12px 0;">
+
+    <button onclick="loginUser()" style="width:100%;margin-top:10px;">
+      Login
+    </button>
+
+    <button onclick="registerUser()" style="width:100%;margin-top:10px;background:#22c55e;">
+      Register
+    </button>
+
+    <p id="msg" style="text-align:center;margin-top:10px;color:#38bdf8;"></p>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
